@@ -1,0 +1,15 @@
+REGEDIT4
+
+[HKEY_CLASSES_ROOT\RDP-Protocol]
+@="rdp:Remote Desktop Protocol"
+"URL Protocol"=""
+
+[HKEY_CLASSES_ROOT\RDP-Protocol\DefaultIcon]
+@="\"C:\\Windows\\System32\\mstsc.exe\""
+
+[HKEY_CLASSES_ROOT\RDP-Protocol\shell]
+
+[HKEY_CLASSES_ROOT\RDP-Protocol\shell\open]
+
+[HKEY_CLASSES_ROOT\RDP-Protocol\shell\open\command]
+@="\"C:\\Windows\\System32\\rdphandler.exe\" \"%1\""

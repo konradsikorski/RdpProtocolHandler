@@ -10,7 +10,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
     class Program
     {
         public static readonly Logger Log = LogManager.GetCurrentClassLogger();
-        private const string REGISTRY_KEY_NAME = "RDPProtocolHandler";
+        private const string REGISTRY_KEY_NAME = "RDP";
 
         static void Main(string[] args)
         {
@@ -82,12 +82,12 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
         {
             if (!RequireAdministratorPrivilages()) return;
 
-            if (prompt)
-            {
-                Console.Write("Do you want to install RDP Protocol handler? (for details use /?) [Y]es [N]o:");
-                var result = Console.ReadLine();
-                if (result?.ToLower() != "y") return;
-            }
+            //if (prompt)
+            //{
+            //    Console.Write("Do you want to install RDP Protocol handler? (for details use /?) [Y]es [N]o:");
+            //    var result = Console.ReadLine();
+            //    if (result?.ToLower() != "y") return;
+            //}
 
             Uninstall();
             

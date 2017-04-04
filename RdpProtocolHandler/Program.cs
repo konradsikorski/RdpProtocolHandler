@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Security.Principal;
 using Microsoft.Win32;
 using NLog;
+using NLog.Config;
 using NLog.Targets;
 
 namespace KonradSikorski.Tools.RdpProtocolHandler
@@ -18,6 +19,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += UnhandledException;
+            ConfigureNLog();
             Log.Info($"{string.Join( " | ", args)}");
 
             if (args.Length == 0) Install();
@@ -38,6 +40,23 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
                         break;
                 }
             }
+        }
+
+        private static void ConfigureNLog()
+        {
+            if (LogManager.Configuration != null) return;
+
+            var logConfiguration = new LoggingConfiguration();
+            var fileTarget = new FileTarget("file")
+            {
+                Layout = "${longdate} ${uppercase:${level}} ${message}",
+                FileName = Path.Combine(Path.GetTempPath(), @"rdppotocolhandler-logs\${shortdate}.log")
+            };
+
+            var rule = new LoggingRule("*", LogLevel.Debug, fileTarget);
+            logConfiguration.LoggingRules.Add(rule);
+
+            LogManager.Configuration = logConfiguration;
         }
 
         private static void OpenLogFile()

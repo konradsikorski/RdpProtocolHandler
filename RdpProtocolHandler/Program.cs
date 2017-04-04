@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using Microsoft.Win32;
 using NLog;
+using NLog.Targets;
 
 namespace KonradSikorski.Tools.RdpProtocolHandler
 {
@@ -25,6 +28,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
                 {
                     case "/uninstall": Uninstall(); break;
                     case "/install": Install(false); break;
+                    case "/log": OpenLogFile(); break;
                     case "/help":
                     case "/?":
                         Help();
@@ -34,6 +38,18 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
                         break;
                 }
             }
+        }
+
+        private static void OpenLogFile()
+        {
+            var fileTarget = LogManager.Configuration.AllTargets.OfType<FileTarget>().FirstOrDefault();
+
+            if (fileTarget == null) return;
+
+            var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
+            string fileName = fileTarget.FileName.Render(logEventInfo);
+            if (File.Exists(fileName))
+                Process.Start(fileName);
         }
 
         private static void UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -75,7 +91,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
 
             Registry.ClassesRoot.DeleteSubKeyTree(REGISTRY_KEY_NAME, false);
             Console.WriteLine("RDP Protocol Handler uninstalled.");
-            Log.Info("RDP Protocol Handler uninstalled.");
+            Log.Info("RDP Protocol Handler uninstalled."); 
         }
 
         private static void Install(bool prompt = true)

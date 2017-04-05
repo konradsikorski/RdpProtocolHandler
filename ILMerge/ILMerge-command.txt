@@ -1,0 +1,1 @@
+ILMerge.exe ..\RdpProtocolHandler\bin\Release\RdpProtocolHandler.exe ..\RdpProtocolHandler\bin\Release\NLog.dll /out:RdpProtocolHandler_M.exe /t:winexe /targetplatform:v4

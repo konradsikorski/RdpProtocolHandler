@@ -5,10 +5,10 @@ This simple app allows you to use `rdp://` uri to start remote desktop session. 
 
 and you will see Remote Desktop Connection window if you do not have saved credentials, otherwise you will be automatically connected.
 
-![Remote Desctop Connection window](img/remoteDesktopWindow.png "Logo Title Text 1")
+![Remote Desktop Connection window](img/remoteDesktopWindow.png "Logo Title Text 1")
 
 ## How to install
-Pleace the `.exe` file in desired location on your PC, then run it **as administrator** with `/install` parameter like this:
+Place the `.exe` file in desired location on your PC, then run it **as administrator** with `/install` parameter like this:
 
 `rdpProtocoleHandler.exe /install`
 
@@ -27,7 +27,7 @@ Each parameter in the uri is separated by comma `,`. First parameter is always t
 `mstsc /?`
 
 #### Examples
-Run Remote Desktop with specific window width and hight
+Run Remote Desktop with specific window width and high
 
 `rdp://remote.server.address,/w:600,/h:400`
 
@@ -40,8 +40,8 @@ Run Remote Desktop using all monitors
 
 Parameter       | Description
  -------------- | ------------- 
- /install       | Run the installetion procedure and register the rdp uri handler. **Require administration privilages**
- /unsinstall    | Run the uninstalation procedure and unregister the rdp uri handler. **Require administration privilages**
+ /install       | Run the installation procedure and register the rdp uri handler. **Require administration privileges**
+ /uninstall     | Run the uninstallation procedure and unregister the rdp uri handler. **Require administration privileges**
  /log           | Open the log file
  /help          | Open the help
  /?             | Open the help
@@ -56,4 +56,4 @@ Uninstall rdp uri handler
 `rdpProtocoleHandler.exe /uninstall`
 
 ## Log file
-The app logs its usages to file using [NLog](http://nlog-project.org). By default log file is created in `C:\Users\<currentUser>\AppData\Local\Temp\rdppotocolhandler-logs`. You can change the logging behavior by creating the NLog.config file (for details go to NLog documentation). 
+The app logs its usages to file using [NLog](http://nlog-project.org). By default, log file is created in `C:\Users\<currentUser>\AppData\Local\Temp\rdppotocolhandler-logs`. You can change the logging behavior by creating the NLog.config file (for details go to NLog documentation). 

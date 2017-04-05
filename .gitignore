@@ -3,6 +3,6 @@
 ################################################################################
 
 /packages
-/RdpProtocolHandler/bin/Debug
-/RdpProtocolHandler/obj/Debug
-/.vs/RdpProtocolHandler/v14
+/RdpProtocolHandler/bin
+/RdpProtocolHandler/obj
+/.vs

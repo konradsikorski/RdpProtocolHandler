@@ -1,5 +1,5 @@
 # RDP Protocol Handler
-This simple app allows you to use rdp:// uri to start remote desktop session. So you can use uri like this:
+This simple app allows you to use `rdp://` uri to start remote desktop session. So you can use uri like this:
 
 `rdp://remote.server.address`
 
@@ -12,7 +12,7 @@ Pleace the `.exe` file in desired location on your PC, then run it **as administ
 
 `rdpProtocoleHandler.exe /install`
 
-After installation do not move the exe file to other location. When you change the file location the protocol handler will not work until you run it again with `/install` parameter.
+After installation do not move the `.exe` file to other location. When you change the file location the protocol handler will not work until you run it again with `/install` parameter.
 
 ## How to use
 Just open uri which start with `rdp://` using browser or any other way.
@@ -22,7 +22,18 @@ The uri format used by application is as following:
 
 `rdp://<remote.server.address>,<param1>,<param2>,...`
 
-Each parameter in the uri is separatet by comma `,`. First parameter is always the remote server address. Other parameters are exactly the same
+Each parameter in the uri is separated by comma `,`. First parameter is always the remote server address. Other parameters are exactly the same which mstsc.exe use (except the rdp file path). To see all parameters for mstsc.exe run following command:
+
+`mstsc /?`
+
+#### Examples
+Run Remote Desktop with specific window width and hight
+
+`rdp://remote.server.address,/w:600,/h:400`
+
+Run Remote Desktop using all monitors
+
+`rdp://remote.server.address,/multimon`
 
 ## RDP Protocol Handler parameters
 `rdpProtocoleHandler.exe [/install] [/uninstall] [/log] [/help] [/?]`

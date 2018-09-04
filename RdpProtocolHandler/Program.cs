@@ -40,6 +40,8 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
                         break;
                 }
             }
+
+            ConsoleWrapper.WaitForClose();
         }
 
         private static void ConfigureNLog()
@@ -73,14 +75,16 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
 
         private static void UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
+            ConsoleWrapper.Alloc();
             Log.Error(e.ExceptionObject);
-            Console.WriteLine("Error occured. Please check the log file for details");
+            ConsoleWrapper.WriteLine("Error occured. Please check the log file for details");
             Environment.Exit(1);
         }
 
         private static void Help()
         {
-            throw new NotImplementedException();
+            ConsoleWrapper.Alloc();
+            ConsoleWrapper.WriteLine("For help go to: https://github.com/konradsikorski/RdpProtocolHandler");
         }
 
         private static void Rdp(string parameter)
@@ -106,21 +110,24 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
 
         private static void Uninstall()
         {
+            ConsoleWrapper.Alloc();
             if (!RequireAdministratorPrivilages()) return;
 
             Registry.ClassesRoot.DeleteSubKeyTree(REGISTRY_KEY_NAME, false);
-            Console.WriteLine("RDP Protocol Handler uninstalled.");
+            ConsoleWrapper.WriteLine("RDP Protocol Handler uninstalled.");
             Log.Info("RDP Protocol Handler uninstalled."); 
         }
 
         private static void Install(bool prompt = true)
         {
+            ConsoleWrapper.Alloc();
+
             if (!RequireAdministratorPrivilages()) return;
 
             //if (prompt)
             //{
-            //    Console.Write("Do you want to install RDP Protocol handler? (for details use /?) [Y]es [N]o:");
-            //    var result = Console.ReadLine();
+            //    ConsoleWrapper.Write("Do you want to install RDP Protocol handler? (for details use /?) [Y]es [N]o:");
+            //    var result = ConsoleWrapper.ReadLine();
             //    if (result?.ToLower() != "y") return;
             //}
 
@@ -142,8 +149,8 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
 
             //--
             Log.Info("RDP Protocol Handler installed");
-            Console.WriteLine("RDP Protocol Handler installed");
-            Console.WriteLine($"WARNING: Do not move this '{assembly.FullName}' to other location, otherwise handler will not work. If you change the location run installation process again.");
+            ConsoleWrapper.WriteLine("RDP Protocol Handler installed");
+            ConsoleWrapper.WriteLine($"WARNING: Do not move this '{assembly.FullName}' to other location, otherwise handler will not work. If you change the location run installation process again.");
         }
 
         private static bool RequireAdministratorPrivilages()
@@ -152,10 +159,10 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
 
             if (!isAdmin)
             {
-                var oldColor = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("You must be system administrator");
-                Console.ForegroundColor = oldColor;
+                var oldColor = ConsoleWrapper.ForegroundColor;
+                ConsoleWrapper.ForegroundColor = ConsoleColor.Red;
+                ConsoleWrapper.WriteLine("You must be system administrator");
+                ConsoleWrapper.ForegroundColor = oldColor;
                 Log.Error("You must be system administrator");
             }
 

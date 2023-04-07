@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
-using Microsoft.Win32;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
 
 namespace KonradSikorski.Tools.RdpProtocolHandler;
 
@@ -68,7 +68,7 @@ class Program
         if (fileTarget == null) return;
 
         var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
-        string fileName = fileTarget.FileName.Render(logEventInfo);
+        var fileName = fileTarget.FileName.Render(logEventInfo);
         if (File.Exists(fileName))
             Process.Start(fileName);
     }
@@ -77,7 +77,7 @@ class Program
     {
         ConsoleWrapper.Alloc();
         Log.Error(e.ExceptionObject);
-        ConsoleWrapper.WriteLine("Error occured. Please check the log file for details");
+        ConsoleWrapper.WriteLine("Error occurred. Please check the log file for details.");
         Environment.Exit(1);
     }
 
@@ -95,7 +95,7 @@ class Program
         var rdpParameters = uri.Split(',');
 
         rdpParameters[0] = $"/v:{rdpParameters[0]}";
-        for (int i = 1; i < rdpParameters.Length; i++)
+        for (var i = 1; i < rdpParameters.Length; i++)
         {
             var rdpParam = rdpParameters[i];
             if (!string.IsNullOrWhiteSpace(rdpParam)) rdpParameters[i] = "/" + rdpParam;
@@ -111,7 +111,7 @@ class Program
     private static void Uninstall()
     {
         ConsoleWrapper.Alloc();
-        if (!RequireAdministratorPrivilages()) return;
+        if (!RequireAdministratorPrivileges()) return;
 
         Registry.ClassesRoot.DeleteSubKeyTree(REGISTRY_KEY_NAME, false);
         ConsoleWrapper.WriteLine("RDP Protocol Handler uninstalled.");
@@ -122,7 +122,7 @@ class Program
     {
         ConsoleWrapper.Alloc();
 
-        if (!RequireAdministratorPrivilages()) return;
+        if (!RequireAdministratorPrivileges()) return;
 
         //if (prompt)
         //{
@@ -137,7 +137,7 @@ class Program
         var assembly = Assembly.GetExecutingAssembly();
         var handlerLocation = assembly.Location;
 
-        //-- create registy structure
+        //-- create registry structure
         var rootKey = Registry.ClassesRoot.CreateSubKey(REGISTRY_KEY_NAME);
         var defaultIconKey = rootKey?.CreateSubKey("DefaultIcon");
         var commandKey = rootKey?.CreateSubKey("shell")?.CreateSubKey("open")?.CreateSubKey("command");
@@ -153,7 +153,7 @@ class Program
         ConsoleWrapper.WriteLine($"WARNING: Do not move this '{assembly.FullName}' to other location, otherwise handler will not work. If you change the location run installation process again.");
     }
 
-    private static bool RequireAdministratorPrivilages()
+    private static bool RequireAdministratorPrivileges()
     {
         var isAdmin = IsUserAdministrator();
 
@@ -171,18 +171,17 @@ class Program
 
     private static bool IsUserAdministrator()
     {
-        using (WindowsIdentity user = WindowsIdentity.GetCurrent())
+        using var user = WindowsIdentity.GetCurrent();
+
+        try
         {
-            try
-            {
-                //get the currently logged in user
-                WindowsPrincipal principal = new WindowsPrincipal(user);
-                return principal.IsInRole(WindowsBuiltInRole.Administrator);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return false;
-            }
+            //get the currently logged in user
+            var principal = new WindowsPrincipal(user);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return false;
         }
     }
 }

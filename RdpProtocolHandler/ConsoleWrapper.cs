@@ -1,51 +1,50 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace KonradSikorski.Tools.RdpProtocolHandler
+namespace KonradSikorski.Tools.RdpProtocolHandler;
+
+public static class ConsoleWrapper
 {
-    public static class ConsoleWrapper
+    public static bool Initialized { get; private set; }
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    static extern bool AllocConsole();
+
+    public static void Alloc()
     {
-        public static bool Initialized { get; private set; }
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool AllocConsole();
-
-        public static void Alloc()
+        if (!Initialized)
         {
-            if (!Initialized)
-            {
-                AllocConsole();
-                Initialized = true;
-            }
+            AllocConsole();
+            Initialized = true;
         }
+    }
 
-        public static ConsoleColor ForegroundColor
-        {
-            get
-            {
-                Alloc();
-                return Console.ForegroundColor;
-            } 
-            set
-            {
-                Alloc();
-                Console.ForegroundColor = value;
-            }
-        }
-
-        public static void WriteLine(string format)
+    public static ConsoleColor ForegroundColor
+    {
+        get
         {
             Alloc();
-            Console.WriteLine(format);
-        }
-
-        public static void WaitForClose()
+            return Console.ForegroundColor;
+        } 
+        set
         {
-            if (!Initialized) return;
-
-            Console.WriteLine("Press any key to close...");
-            Console.ReadKey();
+            Alloc();
+            Console.ForegroundColor = value;
         }
+    }
+
+    public static void WriteLine(string format)
+    {
+        Alloc();
+        Console.WriteLine(format);
+    }
+
+    public static void WaitForClose()
+    {
+        if (!Initialized) return;
+
+        Console.WriteLine("Press any key to close...");
+        Console.ReadKey();
     }
 }

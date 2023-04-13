@@ -13,7 +13,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
 
         public static void Alloc()
         {
-            if (!Initialized) return;
+            if (Initialized) return;
 
             AllocConsole();
             Initialized = true;

@@ -55,7 +55,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
             //--
             Log.Info("RDP Protocol Handler installed");
             ConsoleWrapper.WriteLine("RDP Protocol Handler installed");
-            ConsoleWrapper.WriteLine($"WARNING: Do not move this '{assembly.FullName}' to other location, otherwise handler will not work. If you change the location run installation process again.");
+            ConsoleWrapper.WriteLine($"WARNING: Do not move this file '{assembly.Location}' to other location, otherwise handler will not work. If you change the location run installation process again.");
         }
 
         private static bool RequireAdministratorPrivileges()

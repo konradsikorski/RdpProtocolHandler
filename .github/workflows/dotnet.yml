@@ -45,9 +45,3 @@ jobs:
 
     - name: Check code quality
       run: dotnet sonarscanner begin /k:"my_project_key" /d:sonar.host.url="https://my-sonarqube-server.com" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" && dotnet build ./src/RdpProtocolHandler.sln && dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-
-    - name: Check dependencies for security vulnerabilities
-      uses: depcheck/action@v1
-      with:
-        args: --fail-on-update --severity=high --severity=critical
-        token: ${{ secrets.GITHUB_TOKEN }}

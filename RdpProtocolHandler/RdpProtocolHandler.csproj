@@ -4,10 +4,22 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>KonradSikorski.Tools.RdpProtocolHandler</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
+
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="publish\**" />
+    <EmbeddedResource Remove="publish\**" />
+    <None Remove="publish\**" />
+  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="NLog" Version="5.1.3" />
   </ItemGroup>

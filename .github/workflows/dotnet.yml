@@ -41,7 +41,7 @@ jobs:
         Configuration: ${{ matrix.configuration }}
         
     - name: Check code formatting
-      run: dotnet format --check
+      run: dotnet format $env:Solution_Name --severity info --include-generated --verify-no-changes
 
     - name: Check code quality
       run: dotnet sonarscanner begin /k:"my_project_key" /d:sonar.host.url="https://my-sonarqube-server.com" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" && dotnet build ./src/RdpProtocolHandler.sln && dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Versioning;
 using NLog;
 
@@ -9,11 +10,12 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
+        [RequiresAssemblyFiles("Calls KonradSikorski.Tools.RdpProtocolHandler.Installer.Install(Boolean)")]
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += UnhandledException;
             LoggerHelper.ConfigureNLog();
-            Log.Info($"{string.Join( " | ", args)}");
+            Log.Info($"{string.Join(" | ", args)}");
 
             if (args.Length == 0) Installer.Install();
             else

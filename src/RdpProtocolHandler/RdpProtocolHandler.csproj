@@ -12,6 +12,7 @@
 
   <PropertyGroup>
     <StartupObject />
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

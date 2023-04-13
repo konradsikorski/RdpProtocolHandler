@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using NLog;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Security.Principal;
@@ -23,18 +24,12 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
             Log.Info("RDP Protocol Handler uninstalled.");
         }
 
-        internal static void Install(bool prompt = true)
+        [RequiresAssemblyFiles("Calls System.Reflection.Assembly.Location")]
+        internal static void Install()
         {
             ConsoleWrapper.Alloc();
 
             if (!RequireAdministratorPrivileges()) return;
-
-            //if (prompt)
-            //{
-            //    ConsoleWrapper.Write("Do you want to install RDP Protocol handler? (for details use /?) [Y]es [N]o:");
-            //    var result = ConsoleWrapper.ReadLine();
-            //    if (result?.ToLower() != "y") return;
-            //}
 
             Uninstall();
 

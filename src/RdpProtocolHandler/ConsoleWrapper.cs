@@ -3,13 +3,13 @@ using System.Runtime.InteropServices;
 
 namespace KonradSikorski.Tools.RdpProtocolHandler
 {
-    public static class ConsoleWrapper
+    public static partial class ConsoleWrapper
     {
         public static bool Initialized { get; private set; }
 
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [LibraryImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool AllocConsole();
+        private static partial bool AllocConsole();
 
         public static void Alloc()
         {
@@ -25,7 +25,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
             {
                 Alloc();
                 return Console.ForegroundColor;
-            } 
+            }
             set
             {
                 Alloc();

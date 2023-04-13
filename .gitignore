@@ -5,4 +5,5 @@
 /packages
 /RdpProtocolHandler/bin
 /RdpProtocolHandler/obj
+/RdpProtocolHandler/publish
 /.vs

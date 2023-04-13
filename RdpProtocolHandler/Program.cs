@@ -22,23 +22,29 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
             ConfigureNLog();
             Log.Info($"{string.Join( " | ", args)}");
 
-            if (args.Length == 0) Install();
-            else
+            try
             {
-                var parameter = args[0];
-                switch (parameter.ToLower())
+                if (args.Length == 0) Install();
+                else
                 {
-                    case "/uninstall": Uninstall(); break;
-                    case "/install": Install(false); break;
-                    case "/log": OpenLogFile(); break;
-                    case "/help":
-                    case "/?":
-                        Help();
-                        break;
-                    default:
-                        Rdp(parameter);
-                        break;
+                    var parameter = args[0];
+                    switch (parameter.ToLower())
+                    {
+                        case "/uninstall": Uninstall(); break;
+                        case "/install": Install(false); break;
+                        case "/log": OpenLogFile(); break;
+                        case "/help":
+                        case "/?":
+                            Help();
+                            break;
+                        default:
+                            Rdp(parameter);
+                            break;
+                    }
                 }
+            }
+            catch (Exception ex) {
+                Log.Error(ex);
             }
 
             ConsoleWrapper.WaitForClose();

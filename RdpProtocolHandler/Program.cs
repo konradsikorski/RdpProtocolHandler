@@ -7,7 +7,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
     [SupportedOSPlatform("windows")]
     class Program
     {
-        public static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         static void Main(string[] args)
         {

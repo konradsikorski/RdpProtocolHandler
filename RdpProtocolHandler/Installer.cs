@@ -10,7 +10,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
     [SupportedOSPlatform("windows")]
     internal static class Installer
     {
-        public static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private const string REGISTRY_KEY_NAME = "RDP";
 
         internal static void Uninstall()

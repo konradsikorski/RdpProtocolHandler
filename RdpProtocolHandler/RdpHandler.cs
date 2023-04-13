@@ -6,7 +6,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
 {
     internal class RdpHandler
     {
-        public static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         internal static void Run(string parameter)
         {

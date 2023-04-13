@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.Security.Principal;
 using Microsoft.Win32;
 using NLog;
@@ -11,6 +12,7 @@ using NLog.Targets;
 
 namespace KonradSikorski.Tools.RdpProtocolHandler
 {
+    [SupportedOSPlatform("windows")]
     class Program
     {
         public static readonly Logger Log = LogManager.GetCurrentClassLogger();
@@ -22,29 +24,23 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
             ConfigureNLog();
             Log.Info($"{string.Join( " | ", args)}");
 
-            try
+            if (args.Length == 0) Install();
+            else
             {
-                if (args.Length == 0) Install();
-                else
+                var parameter = args[0];
+                switch (parameter.ToLower())
                 {
-                    var parameter = args[0];
-                    switch (parameter.ToLower())
-                    {
-                        case "/uninstall": Uninstall(); break;
-                        case "/install": Install(false); break;
-                        case "/log": OpenLogFile(); break;
-                        case "/help":
-                        case "/?":
-                            Help();
-                            break;
-                        default:
-                            Rdp(parameter);
-                            break;
-                    }
+                    case "/uninstall": Uninstall(); break;
+                    case "/install": Install(false); break;
+                    case "/log": OpenLogFile(); break;
+                    case "/help":
+                    case "/?":
+                        Help();
+                        break;
+                    default:
+                        Rdp(parameter);
+                        break;
                 }
-            }
-            catch (Exception ex) {
-                Log.Error(ex);
             }
 
             ConsoleWrapper.WaitForClose();
@@ -74,7 +70,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
             if (fileTarget == null) return;
 
             var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
-            string fileName = fileTarget.FileName.Render(logEventInfo);
+            var fileName = fileTarget.FileName.Render(logEventInfo);
             if (File.Exists(fileName))
                 Process.Start(fileName);
         }
@@ -117,7 +113,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
         private static void Uninstall()
         {
             ConsoleWrapper.Alloc();
-            if (!RequireAdministratorPrivilages()) return;
+            if (!RequireAdministratorPrivileges()) return;
 
             Registry.ClassesRoot.DeleteSubKeyTree(REGISTRY_KEY_NAME, false);
             ConsoleWrapper.WriteLine("RDP Protocol Handler uninstalled.");
@@ -128,7 +124,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
         {
             ConsoleWrapper.Alloc();
 
-            if (!RequireAdministratorPrivilages()) return;
+            if (!RequireAdministratorPrivileges()) return;
 
             //if (prompt)
             //{
@@ -143,7 +139,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
             var assembly = Assembly.GetExecutingAssembly();
             var handlerLocation = assembly.Location;
 
-            //-- create registy structure
+            //-- create registry structure
             var rootKey = Registry.ClassesRoot.CreateSubKey(REGISTRY_KEY_NAME);
             var defaultIconKey = rootKey?.CreateSubKey("DefaultIcon");
             var commandKey = rootKey?.CreateSubKey("shell")?.CreateSubKey("open")?.CreateSubKey("command");
@@ -159,7 +155,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
             ConsoleWrapper.WriteLine($"WARNING: Do not move this '{assembly.FullName}' to other location, otherwise handler will not work. If you change the location run installation process again.");
         }
 
-        private static bool RequireAdministratorPrivilages()
+        private static bool RequireAdministratorPrivileges()
         {
             var isAdmin = IsUserAdministrator();
 
@@ -177,12 +173,12 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
 
         private static bool IsUserAdministrator()
         {
-            using (WindowsIdentity user = WindowsIdentity.GetCurrent())
+            using (var user = WindowsIdentity.GetCurrent())
             {
                 try
                 {
                     //get the currently logged in user
-                    WindowsPrincipal principal = new WindowsPrincipal(user);
+                    var principal = new WindowsPrincipal(user);
                     return principal.IsInRole(WindowsBuiltInRole.Administrator);
                 }
                 catch (UnauthorizedAccessException)

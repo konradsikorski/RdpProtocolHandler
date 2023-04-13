@@ -36,4 +36,4 @@ jobs:
       run: dotnet restore $env:Solution_Name
       
     - name: Build application
-      run: dotnet build $env:Solution_Name --no-restore --configuration $env:Configuration
+      run: dotnet build $env:Solution_Name --configuration $env:Configuration

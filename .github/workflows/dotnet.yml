@@ -43,5 +43,16 @@ jobs:
     - name: Check code formatting
       run: dotnet format $env:Solution_Name --severity warn --include-generated --verify-no-changes
 
-    - name: Check code quality
-      run: dotnet sonarscanner begin /k:"my_project_key" /d:sonar.host.url="https://my-sonarqube-server.com" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" && dotnet build ./src/RdpProtocolHandler.sln && dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+    - name: Install SonarScanner
+      run: dotnet tool install --global dotnet-sonarscanner
+      
+    - name: Setup SonarQube
+      uses: SonarSource/sonarcloud-github-action@master
+      with:
+        args: begin /o:konrad /k:konradsikorski_RdpProtocolHandler /d:sonar.login=${{ secrets.SONAR_TOKEN }}
+
+    - name: Analyze
+      run: dotnet sonarscanner begin /k:"konradsikorski_RdpProtocolHandler" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" && dotnet build --configuration Release && dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+    - name: Publish Code Quality Results
+      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"

@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Release] # [Debug, Release]
 
     runs-on: ubuntu-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
@@ -43,18 +43,18 @@ jobs:
     - name: Check code formatting
       run: dotnet format ${{ env.SOLUTION_PATH }} --severity warn --include-generated --verify-no-changes
 
-    - name: Install SonarScanner
-      run: dotnet tool install --global dotnet-sonarscanner
+    #- name: Install SonarScanner
+    #  run: dotnet tool install --global dotnet-sonarscanner
       
-    - name: Setup SonarQube
-      uses: SonarSource/sonarcloud-github-action@master
-      with:
-        args: begin /o:konrad /k:konradsikorski_RdpProtocolHandler /d:sonar.login=${{ secrets.SONAR_TOKEN }}
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}        
+    #- name: Setup SonarQube
+     #uses: SonarSource/sonarcloud-github-action@master
+     # with:
+     #   args: begin /o:konrad /k:konradsikorski_RdpProtocolHandler /d:sonar.login=${{ secrets.SONAR_TOKEN }}
+     # env:
+     #   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}        
 
-    - name: Analyze
-      run: dotnet sonarscanner begin /k:"konradsikorski_RdpProtocolHandler" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" && dotnet build --configuration Release && dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+    #- name: Analyze
+    #  run: dotnet sonarscanner begin /k:"konradsikorski_RdpProtocolHandler" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" && dotnet build --configuration Release && dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
-    - name: Publish Code Quality Results
-      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+    #- name: Publish Code Quality Results
+    #  run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"

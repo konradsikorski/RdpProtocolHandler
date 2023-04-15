@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace KonradSikorski.Tools.RdpProtocolHandler
 {
-    internal class RdpHandler
+    internal static class RdpHandler
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 

@@ -6,7 +6,7 @@ using NLog;
 namespace KonradSikorski.Tools.RdpProtocolHandler
 {
     [SupportedOSPlatform("windows")]
-    class Program
+    static class Program
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 

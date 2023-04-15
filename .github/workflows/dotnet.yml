@@ -36,12 +36,12 @@ jobs:
       run: dotnet restore ${{ env.SOLUTION_PATH }}
       
     - name: Build application
-      run: dotnet build $env:SOLUTION_PATH --no-restore --configuration $env:Configuration
+      run: dotnet build ${{ env.SOLUTION_PATH }} --no-restore --configuration ${{ env.Configuration }}
       env:
         Configuration: ${{ matrix.configuration }}
         
     - name: Check code formatting
-      run: dotnet format $env:SOLUTION_PATH --severity warn --include-generated --verify-no-changes
+      run: dotnet format ${{ env.SOLUTION_PATH }} --severity warn --include-generated --verify-no-changes
 
     - name: Install SonarScanner
       run: dotnet tool install --global dotnet-sonarscanner

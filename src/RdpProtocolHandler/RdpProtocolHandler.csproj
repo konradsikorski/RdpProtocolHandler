@@ -20,6 +20,10 @@
     <EmbeddedResource Remove="publish\**" />
     <None Remove="publish\**" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="NLog" Version="5.1.3" />

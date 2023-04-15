@@ -24,7 +24,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
                 switch (parameter.ToLower())
                 {
                     case "/uninstall": Installer.Uninstall(); break;
-                    case "/install": Installer.Install(false); break;
+                    case "/install": Installer.Install(); break;
                     case "/log": LoggerHelper.OpenLogFile(); break;
                     case "/help":
                     case "/?":

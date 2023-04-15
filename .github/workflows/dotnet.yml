@@ -50,6 +50,8 @@ jobs:
       uses: SonarSource/sonarcloud-github-action@master
       with:
         args: begin /o:konrad /k:konradsikorski_RdpProtocolHandler /d:sonar.login=${{ secrets.SONAR_TOKEN }}
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}        
 
     - name: Analyze
       run: dotnet sonarscanner begin /k:"konradsikorski_RdpProtocolHandler" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" && dotnet build --configuration Release && dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"

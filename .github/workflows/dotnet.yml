@@ -33,7 +33,7 @@ jobs:
         dotnet-version: 7.0.x
 
     - name: Restore dependencies
-      run: dotnet restore $env:SOLUTION_PATH
+      run: dotnet restore ${{ env.SOLUTION_PATH }}
       
     - name: Build application
       run: dotnet build $env:SOLUTION_PATH --no-restore --configuration $env:Configuration

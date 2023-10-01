@@ -1,7 +1,9 @@
 ﻿using Microsoft.Win32;
 using NLog;
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Security.Principal;
@@ -34,8 +36,7 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
             Uninstall();
 
             //-- get assembly info
-            var assembly = Assembly.GetExecutingAssembly();
-            var handlerLocation = assembly.Location;
+            var handlerLocation = GetAppPath();
 
             //-- create registry structure
             var rootKey = Registry.ClassesRoot.CreateSubKey(REGISTRY_KEY_NAME);
@@ -50,7 +51,23 @@ namespace KonradSikorski.Tools.RdpProtocolHandler
             //--
             Log.Info("RDP Protocol Handler installed");
             ConsoleWrapper.WriteLine("RDP Protocol Handler installed");
-            ConsoleWrapper.WriteLine($"WARNING: Do not move this file '{assembly.Location}' to other location, otherwise handler will not work. If you change the location run installation process again.");
+            ConsoleWrapper.WriteLine($"WARNING: Do not move this file '{handlerLocation}' to other location, otherwise handler will not work. If you change the location run installation process again.");
+        }
+
+        private static string GetAppPath()
+        {
+            // Get filename
+            string fileName = Process.GetCurrentProcess().MainModule.FileName;
+
+            // If published as single file, the fileName will be the temp path to the actual binary
+            // You can use Path.GetFileName to get the executable name and combine it with AppContext.BaseDirectory
+            if (fileName.StartsWith(Path.GetTempPath()))
+            {
+                var directory = AppContext.BaseDirectory;
+                fileName = Path.Combine(directory, Path.GetFileName(fileName));
+            }
+
+            return fileName;
         }
 
         private static bool RequireAdministratorPrivileges()
